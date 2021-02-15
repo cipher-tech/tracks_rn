@@ -11,7 +11,7 @@ import TrackListScreen from './src/screens/trackListScreen';
 import TrackDetailScreen from './src/screens/trackDetailScreen';
 import TrackCreateScreen from './src/screens/trackCreateScreen';
 import AccountScreen from './src/screens/accountScreen';
-
+import { Provider as AuthProvider } from "./src/context/authContext"
 const Stack = createStackNavigator();
 
 const LoginFlow = createStackNavigator();
@@ -47,25 +47,27 @@ const MainFlow = createBottomTabNavigator()
 function App() {
     let isLoggedIn = !false
     return (
-        <NavigationContainer>
-            {isLoggedIn ? (
-                <Stack.Navigator>
-                    <Stack.Screen name="SignUp" component={SignUpScreen} options={{
-                        header: () => null
-                    }} />
-                    <Stack.Screen name="SignIn" component={SignInScreen} />
-                    {/* <Stack.Screen name="LoginFlow" component={LoginFlowScreen} /> */}
-                </Stack.Navigator>
-            ) :
-                (
-                    <MainFlow.Navigator>
-                        <MainFlow.Screen name="TrackListFlow" component={TrackListFlowScreen} />
-                        <MainFlow.Screen name="TrackCreate" component={TrackCreateScreen} />
-                        <MainFlow.Screen name="Account" component={AccountScreen} />
-                    </MainFlow.Navigator>
-                )
-            }
-        </NavigationContainer>
+        <AuthProvider>
+            <NavigationContainer>
+                {isLoggedIn ? (
+                    <Stack.Navigator>
+                        <Stack.Screen name="SignUp" component={SignUpScreen} options={{
+                            header: () => null
+                        }} />
+                        <Stack.Screen name="SignIn" component={SignInScreen} />
+                        {/* <Stack.Screen name="LoginFlow" component={LoginFlowScreen} /> */}
+                    </Stack.Navigator>
+                ) :
+                    (
+                        <MainFlow.Navigator>
+                            <MainFlow.Screen name="TrackListFlow" component={TrackListFlowScreen} />
+                            <MainFlow.Screen name="TrackCreate" component={TrackCreateScreen} />
+                            <MainFlow.Screen name="Account" component={AccountScreen} />
+                        </MainFlow.Navigator>
+                    )
+                }
+            </NavigationContainer>
+        </AuthProvider>
     );
 }
 
