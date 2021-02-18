@@ -10,11 +10,12 @@ const authReducer = (state, action) => {
 
 const signUp = (dispatch) => {
     return async ({ email, password }) => {
+        console.log(email, password);
         try {
-            const response = await trackerApi.post("/signUp", {email,password})
+            const response = await trackerApi.post("/signup", {email, password})
             console.log(response);
         } catch (err) {
-            console.log(err.message);
+            console.log(err.response.data);
         }
     }
 }
@@ -30,4 +31,4 @@ const signOut = (dispatch) => {
 export const { Provider, Context } = createDataContext(
     authReducer,
     {signUp, signOut, signIn},
-    { isSignedIn: false })
+    { isSignedIn: false, errorMessage })
