@@ -1,7 +1,6 @@
 // In App.js in a new project
 
 import * as React from 'react';
-import { View, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -11,7 +10,8 @@ import TrackListScreen from './src/screens/trackListScreen';
 import TrackDetailScreen from './src/screens/trackDetailScreen';
 import TrackCreateScreen from './src/screens/trackCreateScreen';
 import AccountScreen from './src/screens/accountScreen';
-import { Provider as AuthProvider } from "./src/context/authContext"
+import { Context, Provider as AuthProvider } from "./src/context/authContext"
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const Stack = createStackNavigator();
 
 const LoginFlow = createStackNavigator();
@@ -44,12 +44,25 @@ const MainFlow = createBottomTabNavigator()
 //     )
 // }
 
+
 function App() {
-    let isLoggedIn = !false
+    const context = React.useContext(Context)
+    console.log("context", context);
+    let isLoggedIn;
+    AsyncStorage.clear(() => console.log("done clear"))
+    .then(result => {
+        isLoggedIn = result
+        console.log(">>>>>> ", isLoggedIn)
+    })
+    AsyncStorage.getItem("token")
+    .then(result => {
+        isLoggedIn = result
+        console.log(">>>>>> ", isLoggedIn)
+    })
     return (
         <AuthProvider>
             <NavigationContainer>
-                {isLoggedIn ? (
+                {!isLoggedIn ? (
                     <Stack.Navigator>
                         <Stack.Screen name="SignUp" component={SignUpScreen} options={{
                             header: () => null

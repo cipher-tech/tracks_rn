@@ -7,7 +7,8 @@ import { Context } from '../context/authContext'
 const SignUpScreen = ({ navigation }) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const {state,signUp} = useContext(Context)
+    const { state, signUp } = useContext(Context)
+
     return (
         <View style={styles.container}>
             <Spacer>
@@ -27,7 +28,10 @@ const SignUpScreen = ({ navigation }) => {
 
             {state.errorMessage ? <Text style={styles.errorMessage}>{state.errorMessage}</Text> : null}
             <Spacer>
-                <Button title="Sign up" onPress={() => signUp({email,password})} />
+                <Button title="Sign up" onPress={async () => {
+                   await signUp({ email, password })
+                    // navigation.navigate("TrackListFlow")
+                }} />
             </Spacer>
         </View>
     )
