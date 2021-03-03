@@ -30,7 +30,7 @@ const SignUpScreen = ({ navigation }) => {
             <Spacer>
                 <Button title="Sign up" onPress={async () => {
                    await signUp({ email, password })
-                    // navigation.navigate("TrackListFlow")
+                    navigation.navigate("TrackList")
                 }} />
             </Spacer>
         </View>
