@@ -1,14 +1,19 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { Text, Input, Button } from "react-native-elements"
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import Spacer from '../components/spacer'
 import { Context } from '../context/authContext'
 
 const SignUpScreen = ({ navigation }) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const { state, signUp } = useContext(Context)
+    const { state, signUp, tryLocalSignIn } = useContext(Context)
 
+    useEffect(() => {
+        tryLocalSignIn(navigation)
+    }, [])
     return (
         <View style={styles.container}>
             <Spacer>
@@ -29,8 +34,8 @@ const SignUpScreen = ({ navigation }) => {
             {state.errorMessage ? <Text style={styles.errorMessage}>{state.errorMessage}</Text> : null}
             <Spacer>
                 <Button title="Sign up" onPress={async () => {
-                   await signUp({ email, password })
-                    // navigation.navigate("TrackListFlow")
+                    await signUp({ email, password })
+                    navigation.navigate("TrackListFlow")
                 }} />
             </Spacer>
         </View>

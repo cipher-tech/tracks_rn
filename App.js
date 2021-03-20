@@ -12,6 +12,7 @@ import TrackCreateScreen from './src/screens/trackCreateScreen';
 import AccountScreen from './src/screens/accountScreen';
 import { Context, Provider as AuthProvider } from "./src/context/authContext"
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 const Stack = createStackNavigator();
 
 const LoginFlow = createStackNavigator();
@@ -46,40 +47,26 @@ const MainFlow = createBottomTabNavigator()
 
 
 function App() {
-    const context = React.useContext(Context)
-    console.log("context", context);
-    let isLoggedIn;
-    AsyncStorage.clear(() => console.log("done clear"))
-    .then(result => {
-        isLoggedIn = result
-        console.log(">>>>>> ", isLoggedIn)
-    })
-    AsyncStorage.getItem("token")
-    .then(result => {
-        isLoggedIn = result
-        console.log(">>>>>> ", isLoggedIn)
-    })
     return (
         <AuthProvider>
-            <NavigationContainer>
-                {!isLoggedIn ? (
-                    <Stack.Navigator>
-                        <Stack.Screen name="SignUp" component={SignUpScreen} options={{
-                            header: () => null
-                        }} />
-                        <Stack.Screen name="SignIn" component={SignInScreen} />
-                        {/* <Stack.Screen name="LoginFlow" component={LoginFlowScreen} /> */}
-                    </Stack.Navigator>
-                ) :
-                    (
-                        <MainFlow.Navigator>
-                            <MainFlow.Screen name="TrackListFlow" component={TrackListFlowScreen} />
-                            <MainFlow.Screen name="TrackCreate" component={TrackCreateScreen} />
-                            <MainFlow.Screen name="Account" component={AccountScreen} />
-                        </MainFlow.Navigator>
-                    )
-                }
-            </NavigationContainer>
+            <SafeAreaProvider>
+
+                <NavigationContainer>
+                    {/* <Stack.Navigator> */}
+                    <Stack.Screen initialRouteName="SignUp" name="SignUp" component={SignUpScreen} options={{
+                        header: () => null,
+                    }} />
+                    <Stack.Screen name="SignIn" component={SignInScreen} />
+                    {/* <Stack.Screen name="LoginFlow" component={LoginFlowScreen} /> */}
+                    {/* </Stack.Navigator> */}
+                    <MainFlow.Navigator>
+                        <MainFlow.Screen name="TrackListFlow" component={TrackListFlowScreen} />
+                        <MainFlow.Screen name="TrackCreate" component={TrackCreateScreen} />
+                        <MainFlow.Screen name="Account" component={AccountScreen} />
+                    </MainFlow.Navigator>
+
+                </NavigationContainer>
+            </SafeAreaProvider>
         </AuthProvider>
     );
 }
