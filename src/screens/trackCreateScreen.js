@@ -1,26 +1,15 @@
-import { requestPermissionsAsync, st } from 'expo-location'
-import React, { useEffect, useState } from 'react'
+import React, { useContext} from 'react'
 import { StyleSheet} from 'react-native'
 import { Text } from 'react-native-elements'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Map from '../components/map'
+import {Context as LocationContext} from "../context/locationContext"
+import useLocation from '../hooks/useLocation'
 
+// import "../_mockLocation"
 const TrackCreateScreen = () => {
-    const [err, setErr] = useState(null)
-
-    const startWatching = async () => {
-        try {
-            let {status} =  await requestPermissionsAsync()
-            if(status !== 'granted'){
-                setErr("Please Enable Tracking")
-            }
-        } catch (error) {
-            setErr(error)
-        }
-    }
-    useEffect(() => {
-        startWatching()
-    }, [])
+    const {addLocation} = useContext(LocationContext)
+    const [err] = useLocation(addLocation)
     return (
         <SafeAreaView>
             <Text h3>TrackCreate Screen</Text>

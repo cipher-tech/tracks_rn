@@ -8,11 +8,11 @@ const getLocation = increment => {
         coords: {
             speed: 0,
             heading: 0,
-            accuracy: 0,
+            accuracy: 1,
             altitudeAccuracy: 5,
             altitude: 5,
-            longitude:  -122.03121 + increment * tenMetersWithDegrees,
-            latitude:  -122.03121 + increment * tenMetersWithDegrees
+            longitude:   3.205999 + increment * tenMetersWithDegrees,
+            latitude:  6.315999 + increment * tenMetersWithDegrees
         }
     }
 }
@@ -24,5 +24,6 @@ setInterval(() => {
         watchId: Location._getCurrentWatchId(),
         location: getLocation(counter)
     })
+    console.log("location mock??? ");
     counter++
 }, 1000)
